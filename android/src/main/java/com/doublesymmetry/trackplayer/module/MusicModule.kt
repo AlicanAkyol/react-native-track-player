@@ -599,7 +599,7 @@ class MusicModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaM
             if (verifyServiceBoundOrReject(callback)) return@launch
 
             if (index >= 0 && index < musicService.tracks.size) {
-                callback.resolve(Arguments.fromBundle(musicService.tracks[index].originalItem))
+                callback.resolve(musicService.tracks[index].originalItem?.let { Arguments.fromBundle(it) })
             } else {
                 callback.resolve(null)
             }
@@ -646,9 +646,8 @@ class MusicModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaM
             if (verifyServiceBoundOrReject(callback)) return@launch
             callback.resolve(
                 if (musicService.tracks.isEmpty()) null
-                else Arguments.fromBundle(
-                    musicService.tracks[musicService.getCurrentTrackIndex()].originalItem
-                )
+                else musicService.tracks[musicService.getCurrentTrackIndex()]
+                    .originalItem?.let { Arguments.fromBundle(it) }
             )
         }
     }
